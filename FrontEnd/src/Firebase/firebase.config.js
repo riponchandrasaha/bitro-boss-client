@@ -13,11 +13,5 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_appId
 
 };
-/* VITE_apiKey "AIzaSyDHuxUX7u3a-tFCeAA_8TnwQWURU2cRTq0",
-    VITE_authDomain "bistro-boss-8543b.firebaseapp.com",
-    VITE_projectId "bistro-boss-8543b",
-    VITE_storageBucket "bistro-boss-8543b.firebasestorage.app",
-    VITE_messagingSenderId "1033178005768",
-    VITE_appId "1:1033178005768:web:47e7bba17a11c1f08d6cbd", */
-// Initialize Firebase
+
 export const app = initializeApp(firebaseConfig);
