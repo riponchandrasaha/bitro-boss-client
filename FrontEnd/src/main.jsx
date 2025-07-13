@@ -13,12 +13,12 @@ import AuthProvider from './Provider/AuthProvider';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    
-     <AuthProvider>
-       <div className='max-w-screen-xl mx-auto'>
+
+    <AuthProvider>
+      <div className='max-w-screen-xl mx-auto'>
         <RouterProvider router={router} />
       </div>
-     </AuthProvider>
-    
+    </AuthProvider>
+
   </StrictMode>,
 )
