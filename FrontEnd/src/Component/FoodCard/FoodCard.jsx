@@ -22,7 +22,12 @@ const FoodCard = ({ item }) => {
                 image,
                 price
             }
-            axiosSecure.post('http://localhost:5000/cart', cartItem)
+            axiosSecure.post('/carts', cartItem)
+                /*  const axiosSecure = axios.create({
+                     baseURL: 'http://localhost:5000',
+                     withCredentials: true
+                 }); */
+
                 .then(res => {
                     console.log(res.data)
                     if (res.data.insertedId) {
