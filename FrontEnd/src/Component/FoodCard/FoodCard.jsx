@@ -1,26 +1,56 @@
-
+import Swal from 'sweetalert2';
+import useAuth from "../../Hooks/useAuth";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
-    const { name, image, price, recipe } = item;
-    const handleAddToCart = food => {
-        console.log(food);
+    const { name, image, price, recipe, _id } = item;
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    }
+    const handleAddToCart = food => {
+        if (user && user.email) {
+          
+            console.log("Adding to cart:", food);
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart!',
+                text: `${food.name} has been added to your cart.`
+            });
+        } else {
+          
+            Swal.fire({
+                title: "Please log in to add to cart",
+                text: "You need to log in to continue",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Login now"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/login", { state: { from: location } });
+                }
+            });
+        }
+    };
+
     return (
         <div className="card bg-base-100 w-96 shadow-sm">
             <figure>
-                <img
-                    src={image}
-                    alt="Shoes" />
+                <img src={image} alt={name} />
             </figure>
-            <p className=" absolute right-0 px-4 bg-red-500 text-white">${price}</p>
+            <p className="absolute right-0 px-4 bg-red-500 text-white">${price}</p>
             <div className="card-body text-center">
                 <h2 className="card-title">{name}</h2>
                 <p>{recipe}</p>
                 <div className="card-actions justify-center">
                     <button
                         onClick={() => handleAddToCart(item)}
-                        className="btn btn-dash btn-warning ">Add to cart</button>
+                        className="btn btn-warning"
+                    >
+                        Add to cart
+                    </button>
                 </div>
             </div>
         </div>
