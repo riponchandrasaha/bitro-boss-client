@@ -1,7 +1,7 @@
 import {
   createBrowserRouter,
- 
 } from "react-router-dom";
+
 import Main from "../Layout/Main";
 import Home from "../pages/Home/Home";
 import Menu from "../pages/Menu/Menu/Menu";
@@ -11,45 +11,58 @@ import SignUp from "../pages/SignUp/SignUp";
 import Privateroutes from "./Privateroutes";
 import Secret from "../pages/Shared/secret/Secret";
 import Dashboard from "../Layout/Dashboard";
+import Cart from "../pages/DashBoard/Cart/Cart";
 
- export const router = createBrowserRouter([
+export const router = createBrowserRouter([
+  // Public Main Layout Routes
   {
     path: "/",
-    element: <Main></Main>,
+    element: <Main />,
     children: [
-        {
-            path: '/',
-            element: <Home></Home>
-        },
-        {
-            path: 'dashboard',
-            element: <Dashboard></Dashboard>,
-            children: [
-              {
-                path: 'cart'
-              }
-            ]
-        },
-        {
-          path: 'menu',
-          element: <Menu></Menu> 
-        },
-        {
-          path:'order/:category',
-          element: <Order></Order>
-        },
-        {
-          path: 'login',
-          element: <Login></Login>
-        } ,
-        {
-          path: 'signup',
-          element: <SignUp></SignUp>
-        },
-        {
-          path: 'secret',
-          element: <Privateroutes><Secret></Secret></Privateroutes>
-        }
-    ]
-  }
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "menu",
+        element: <Menu />,
+      },
+      {
+        path: "order/:category",
+        element: <Order />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "secret",
+        element: (
+          <Privateroutes>
+            <Secret />
+          </Privateroutes>
+        ),
+      },
+    ],
+  },
+
+  // Protected Dashboard Routes
+  {
+    path: "/dashboard",
+    element: (
+      
+        <Dashboard />
+      
+    ),
+    children: [
+      {
+        path: "cart",
+        element: <Cart />,
+      },
+    ],
+  },
 ]);
