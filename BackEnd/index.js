@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb'); // ✅ ObjectId included
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,16 +27,19 @@ async function run() {
         const reviewCollection = db.collection("reviews");
         const cartCollection = db.collection("carts");
 
+        // Get menu
         app.get('/menu', async(req, res) => {
             const result = await menuCollection.find().toArray();
             res.send(result);
         });
 
+        // Get reviews
         app.get('/reviews', async(req, res) => {
             const result = await reviewCollection.find().toArray();
             res.send(result);
         });
-        //"error":"Email query parameter is required"}
+
+        // ✅ Get carts (all or by email)
         app.get('/carts', async(req, res) => {
             const email = req.query.email;
             let query = {};
@@ -44,7 +47,6 @@ async function run() {
             if (email) {
                 query = { email: email };
             }
-
 
             try {
                 const result = await cartCollection.find(query).toArray();
@@ -55,16 +57,24 @@ async function run() {
             }
         });
 
-
+        // ✅ Add to cart
         app.post('/carts', async(req, res) => {
             const cartItem = req.body;
             const result = await cartCollection.insertOne(cartItem);
             res.send(result);
         });
 
+        // ✅ Delete from cart
+        app.delete('/carts/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await cartCollection.deleteOne(query);
+            res.send(result);
+        });
+
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-        // await client.close(); // only close if needed
+        // await client.close(); // keep connection alive
     }
 }
 
