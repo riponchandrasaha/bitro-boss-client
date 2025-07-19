@@ -3,6 +3,9 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { AuthContext } from '../../Provider/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialLogin from '../SocialLogin/SocialLogin';
+import FacebookLogin from '../SocialLogin/FacebookLogin';
+
 
 const Login = () => {
     const [disabled, setDisabled] = useState(true);
@@ -96,6 +99,12 @@ const Login = () => {
                             />
                         </fieldset>
                     </form>
+                     {/* ✅ Add social login below */}
+                    <div className="px-8 pb-4 flex justify-between">
+                        <SocialLogin />
+                        <FacebookLogin/>
+                    </div>
+                    
                     <p className="text-center mb-4">
                         <small>New here? <Link to="/signup" className="link link-hover">Create an account</Link></small>
                     </p>

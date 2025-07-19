@@ -16,23 +16,6 @@ const SignUp = () => {
 
         createUser(data.email, data.password)
             .then(result => {
-                const userInfo = {
-                    name: data.name,
-                    email: data.email
-                }
-
-                axiosPublic.post('/users', userInfo)
-                    .then(res => {
-                        if (res.data.insertedId) {
-                            reset();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Account Created!',
-                                text: `Welcome ${data.name || 'User'}!`,
-                            });
-                            navigate('/');
-                        }
-                    })
                 const loggedUser = result.user;
                 console.log("Created user:", loggedUser);
 
@@ -42,13 +25,24 @@ const SignUp = () => {
                 });
             })
             .then(() => {
-                reset();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Account Created!',
-                    text: `Welcome ${data.name || 'User'}!`,
-                });
-                navigate('/'); // ✅ Navigate after successful profile update
+                const userInfo = {
+                    name: data.name,
+                    email: data.email
+                };
+
+                return axiosPublic.post('/users', userInfo);
+            })
+            .then(res => {
+                if (res.data.insertedId) {
+                    console.log("User added to DB");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Account Created!',
+                        text: `Welcome ${data.name || 'User'}!`,
+                    });
+                    reset();
+                    navigate('/');
+                }
             })
             .catch(error => {
                 console.error("Signup or Profile Update Error:", error);

@@ -1,9 +1,13 @@
+// src/Providers/AuthProvider.jsx
 import { createContext, useEffect, useState } from "react";
 import {
     createUserWithEmailAndPassword,
+    FacebookProvider,
     getAuth,
+    GoogleAuthProvider,
     onAuthStateChanged,
     signInWithEmailAndPassword,
+    signInWithPopup,
     signOut,
     updateProfile
 } from "firebase/auth";
@@ -11,6 +15,7 @@ import { app } from "../Firebase/firebase.config";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -26,26 +31,35 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
 
+    const googleSignIn = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider);
+    };
+    const FBSignIn = () => {
+        setLoading(true);
+        return signInWithPopup(auth, FacebookProvider);
+    };
+
     const logOut = () => {
         setLoading(true);
         return signOut(auth);
     };
 
-    const updateUserProfile = (name, photo) => {
+    const updateUserProfile = ({ displayName, photoURL }) => {
         return updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photo
+            displayName,
+            photoURL
         });
     };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            console.log('current user', currentUser);
             setLoading(false);
+            console.log("Current User:", currentUser);
         });
 
-        return () => unsubscribe(); // ✅ correct cleanup
+        return () => unsubscribe();
     }, []);
 
     const authInfo = {
@@ -53,6 +67,8 @@ const AuthProvider = ({ children }) => {
         loading,
         createUser,
         signIn,
+        googleSignIn,
+        FBSignIn,
         logOut,
         updateUserProfile
     };
