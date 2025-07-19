@@ -2,7 +2,7 @@
 import { createContext, useEffect, useState } from "react";
 import {
     createUserWithEmailAndPassword,
-    FacebookProvider,
+  /*   FacebookProvider, */
     getAuth,
     GoogleAuthProvider,
     onAuthStateChanged,
@@ -35,11 +35,11 @@ const AuthProvider = ({ children }) => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     };
-    const FBSignIn = () => {
+  /*   const FBSignIn = () => {
         setLoading(true);
         return signInWithPopup(auth, FacebookProvider);
     };
-
+ */
     const logOut = () => {
         setLoading(true);
         return signOut(auth);
@@ -68,7 +68,7 @@ const AuthProvider = ({ children }) => {
         createUser,
         signIn,
         googleSignIn,
-        FBSignIn,
+       /*  FBSignIn, */
         logOut,
         updateUserProfile
     };
