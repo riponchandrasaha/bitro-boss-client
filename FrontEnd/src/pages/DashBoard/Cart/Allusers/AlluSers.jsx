@@ -12,16 +12,26 @@ const AlluSers = () => {
             const res = await axiosSecure.get('/users');
             return res.data;
         }
-    })
+    });
 
-   /*  const handleMakeAdmin = user =>{
-        
-    } */
+    const handleMakeAdmin = user => {
+        axiosSecure.patch(`/users/admin/${user._id}`)
+            .then(res => {
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        title: "Success!",
+                        text: `${user.name} is now an admin.`,
+                        icon: "success"
+                    });
+                }
+            });
+    };
 
     const handleDeleteUser = user => {
-  Swal.fire({
+        Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: `Delete ${user.name}?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -29,81 +39,71 @@ const AlluSers = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-
                 axiosSecure.delete(`/users/${user._id}`)
                     .then(res => {
                         if (res.data.deletedCount > 0) {
                             refetch();
                             Swal.fire({
                                 title: "Deleted!",
-                                text: "Your file has been deleted.",
+                                text: `${user.name} has been deleted.`,
                                 icon: "success"
                             });
                         }
-
-                    })
+                    });
             }
         });
-    }
+    };
+
     return (
         <div>
-            <div className=" flex justify-evenly my-4">
-                <h2 className=" text-3xl"> All Users</h2>
-                <h2 className=" text-3xl">Total Users: {users.length}</h2>
+            <div className="flex justify-evenly my-4">
+                <h2 className="text-3xl">All Users</h2>
+                <h2 className="text-3xl">Total Users: {users.length}</h2>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
-                    {/* head */}
                     <thead>
-
                         <tr>
-                            <th></th>
-                            <th className="">Name</th>
+                            <th>#</th>
+                            <th>Name</th>
                             <th>Email</th>
-                            <th>Roll</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            users.map((user, index) => <tr key={user._id}>
-                                <th>{index + 1}</th>
-                                <td className="text-green-600 text-2xl text-shadow-blue-600 ">{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
-
-
-                                    <button
-                                        onClick={() => /* handleMakeAdmin */handleDeleteUser(user)}
-                                        className="btn btn-dash btn-lg bg-orange-500 text-2xl text-green-600">
-                                        <FaUserCheck></FaUserCheck>
-                                    </button>
-
-
-
-                                </td>
-                                <td>
-                                    <button
-                                        onClick={() => handleDeleteUser(user._id)}
-                                        className="btn btn-ghost btn-xl text-red-600">
-                                        <FaTrashAlt></FaTrashAlt>
-                                    </button>
-                                </td>
-                            </tr>)
+                            users.map((user, index) => (
+                                <tr key={user._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        {
+                                            user.role === 'admin' ? 'Admin' : (
+                                                <button
+                                                    onClick={() => handleMakeAdmin(user)}
+                                                    className="btn btn-sm bg-orange-500 text-white"
+                                                >
+                                                    <FaUserCheck />
+                                                </button>
+                                            )
+                                        }
+                                    </td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleDeleteUser(user)}
+                                            className="btn btn-sm btn-ghost text-red-600"
+                                        >
+                                            <FaTrashAlt />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
                         }
-
-
                     </tbody>
                 </table>
             </div>
-            {/* <div className=" rotate-90 pt-50">
-                <div className="mockup-phone border-primary">
-                    <div className="mockup-phone-camera"></div>
-                    <div className="mockup-phone-display rotate-180">
-                        <img alt="wallpaper" src="https://img.daisyui.com/images/stock/453966.webp" />
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 };
