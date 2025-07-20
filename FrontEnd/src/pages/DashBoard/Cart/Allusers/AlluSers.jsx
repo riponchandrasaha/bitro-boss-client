@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { FaTrashAlt } from "react-icons/fa";
-import { FaUserCheck } from "react-icons/fa6";
+import { Fa42Group, FaUserCheck } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 const AlluSers = () => {
@@ -9,7 +9,11 @@ const AlluSers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const res = await axiosSecure.get('/users', {
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('access-token')}`
+                }
+            });
             return res.data;
         }
     });
@@ -80,7 +84,7 @@ const AlluSers = () => {
                                     <td>{user.email}</td>
                                     <td>
                                         {
-                                            user.role === 'admin' ? 'Admin' : (
+                                            user.role === 'admin' ?  'Admin' : (
                                                 <button
                                                     onClick={() => handleMakeAdmin(user)}
                                                     className="btn btn-sm bg-orange-500 text-white"
