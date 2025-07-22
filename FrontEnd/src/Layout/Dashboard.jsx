@@ -12,10 +12,12 @@ import {
 } from "react-icons/fa6";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../Hooks/useCart";
+import useAdmin from "../Hooks/useAdmin";
 
 
 const Dashboard = () => {
     const [cart] = useCart();
+     /* const [isAdmin] = useAdmin(); */  // TODO: Replace with real admin check in future
     const isAdmin = true; // TODO: Replace with real admin check in future
 
     return (
