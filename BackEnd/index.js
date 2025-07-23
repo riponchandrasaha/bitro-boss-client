@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        await client.connect();
+        /*  await client.connect(); */
         const db = client.db("bistroDb");
 
         const usersCollection = db.collection("users");
@@ -166,7 +166,7 @@ async function run() {
             res.send(result);
         });
 
-        console.log("✅ Connected to MongoDB successfully!");
+        /*  console.log("✅ Connected to MongoDB successfully!"); */
     } finally {
         // Do not close connection to keep server alive
     }
